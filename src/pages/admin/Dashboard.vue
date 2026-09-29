@@ -1,8 +1,15 @@
 <script setup>
+import { computed, ref } from 'vue'
 import { RouterLink } from 'vue-router'
+import useUserStore from '../../store/user.js'
+
+const userStore = useUserStore()
+const loadingUser = ref(false)
 
 // TODO: remplacer ces données statiques par un appel API
 // (ex: GET /api/dashboard au montage du composant, via onMounted)
+
+const userName = computed(() => userStore.user?.name || 'Utilisateur')
 
 const stats = [
   { id: 'completed', label: 'Exercices complétés', value: '127', mono: false, colorClass: '' },
@@ -36,7 +43,7 @@ function progressPercent(item) {
   <div>
     <div class="flex items-center justify-between mb-10">
       <div>
-        <h1 class="font-serif text-3xl mb-1">Bon retour, Aïssatou</h1>
+        <h1 class="font-serif text-3xl mb-1">Bon retour, {{ userName }}</h1>
         <p class="text-ink/55 text-sm">Voici où tu en es dans ta préparation.</p>
       </div>
       <RouterLink to="/dashboard/exercices" class="hidden sm:inline-flex items-center rounded-full bg-ink text-paper text-sm font-medium px-5 py-2.5 hover:bg-indigo-700 transition-colors">
