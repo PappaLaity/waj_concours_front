@@ -40,7 +40,8 @@ const categories = [
         <nav class="hidden md:flex items-center gap-10 text-[15px] text-ink/70">
           <a href="#categories" class="hover:text-ink transition-colors">Exercices</a>
           <a href="#tarif" class="hover:text-ink transition-colors">Tarif</a>
-          <RouterLink v-if="!userStore.user" :to="{ name: 'Login' }" class="hover:text-ink transition-colors">Connexion</RouterLink>
+          <RouterLink v-if="!userStore.user" :to="{ name: 'Login' }" class="hover:text-ink transition-colors">Connexion
+          </RouterLink>
         </nav>
         <!-- Bouton header conditionnel -->
         <template v-if="userStore.user">
@@ -86,7 +87,7 @@ const categories = [
           <div class="hero-rise hero-rise-3 flex flex-wrap items-center gap-4 mt-9">
             <RouterLink to="/inscription"
               class="inline-flex items-center rounded-full bg-indigo text-paper font-medium px-6 py-3.5 hover:bg-indigo-700 transition-colors">
-              Commencer — 1000 FCFA
+              Commencer — 500 FCFA/mois
             </RouterLink>
             <a href="#categories"
               class="inline-flex items-center text-ink font-medium px-2 py-3.5 border-b border-ink/30 hover:border-ink transition-colors">
@@ -172,9 +173,9 @@ const categories = [
     <!-- Pricing -->
     <section id="tarif" class="max-w-6xl mx-auto px-6 py-24">
       <div class="max-w-md mx-auto border border-ink/15 rounded-2xl p-9 text-center">
-        <p class="text-sm text-ink/60 mb-2">Accès complet</p>
-        <p class="font-serif text-5xl mb-1">1 000 <span class="text-2xl">FCFA</span></p>
-        <p class="text-sm text-ink/50 mb-8">Paiement unique</p>
+        <p class="text-sm text-ink/60 mb-2">Abonnement mensuel</p>
+        <p class="font-serif text-5xl mb-1">500 <span class="text-2xl">FCFA / mois</span></p>
+        <p class="text-sm text-ink/50 mb-8">Renouvelé chaque mois, résiliable à tout moment</p>
         <ul class="text-left space-y-3 text-sm text-ink/75 mb-9">
           <li class="flex gap-3"><span class="text-success">✓</span> Accès illimité à toutes les catégories</li>
           <li class="flex gap-3"><span class="text-success">✓</span> Corrections détaillées après chaque exercice</li>
@@ -183,7 +184,7 @@ const categories = [
         </ul>
         <RouterLink to="/inscription"
           class="block w-full rounded-full bg-ink text-paper font-medium py-3.5 hover:bg-indigo-700 transition-colors">
-          Créer mon compte
+          Je m'abonne
         </RouterLink>
       </div>
     </section>
