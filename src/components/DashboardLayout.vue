@@ -3,11 +3,11 @@ import { onMounted, ref } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { computed } from 'vue'
 import axiosClient from '../axios.js'
-import useUSerStore from '../store/user.js'
+import useUserStore from '../store/user.js'
 
 const route = useRoute()
 const router = useRouter()
-const userStore = useUSerStore()
+const userStore = useUserStore()
 const loadingUser = ref(false)
 
 // Partagé par toutes les pages du dashboard
@@ -35,7 +35,7 @@ const userInitials = computed(() => {
 const handleLogout = async () => {
     try {
         axiosClient.post('/logout').then(() => {
-            console.log('Logout successful')
+            // console.log('Logout successful')
             router.push({ name: 'Login' })
         });
     } catch (error) {
