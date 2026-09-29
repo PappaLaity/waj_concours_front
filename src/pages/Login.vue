@@ -11,6 +11,7 @@ const form = ref({
 })
 
 const error = ref('')
+const errors = ref({})
 const loading = ref(false)
 const errorMessage = ref('')
 
@@ -22,21 +23,21 @@ async function handleLogin() {
         axiosClient.get('/sanctum/csrf-cookie').then(() => {
             axiosClient.post('/login', form.value)
                 .then((response) => {
-                    console.log('Login successful:', response)
+                    // console.log('Login successful:', response)
 
                     router.push('/dashboard')
                 })
-                .catch((error) => {
-                    error.value = "Une erreur est survenue. Réessaie."
-                    errorMessage.value = error.response?.data?.message || "Identifiants incorrects. Réessaie."
-                    console.error('Login error:', error)
+                .catch((e) => {
+                    errorMessage.value = e.response?.data?.message || "Identifiants incorrects. Réessaie."
+                    // errors.value = e.response?.data?.errors || {}
+                    // console.log('Login error: ', e.response)
                 })
                 .finally(() => {
                     loading.value = false
                 })
         })
-    } catch (e) {
-        console.error('Login error:', e)
+    } catch (err) {
+        console.error('Login error:', err)
         error.value = "Identifiants incorrects. Réessaie."
     } finally {
         loading.value = false
@@ -62,6 +63,10 @@ async function handleLogin() {
                     class="w-full rounded-lg border border-ink/15 bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo/40 focus:border-indigo"
                     placeholder="77 123 45 67">
             </div>
+            <!-- <p v-if="errors['email']"
+                class="text-sm text-danger bg-danger/5 border border-danger/20 rounded-lg px-3 py-2">
+                {{ errors['email'][0] }}
+            </p> -->
 
             <div>
                 <div class="flex items-center justify-between mb-1.5">
@@ -73,6 +78,10 @@ async function handleLogin() {
                     class="w-full rounded-lg border border-ink/15 bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo/40 focus:border-indigo"
                     placeholder="••••••••">
             </div>
+            <!-- <p v-if="errors['password']"
+                class="text-sm text-danger bg-danger/5 border border-danger/20 rounded-lg px-3 py-2">
+                {{ errors['password'][0] }}
+            </p> -->
 
             <p v-if="errorMessage" class="text-sm text-danger bg-danger/5 border border-danger/20 rounded-lg px-3 py-2">
                 {{ errorMessage }}
