@@ -11,20 +11,22 @@ const form = ref({
   email: '',
   password: '',
   password_confirmation: '',
-  // terms: false,
+  terms: false,
 })
 
 const error = ref('')
+const errors = ref({})
 const loading = ref(false)
 
 const passwordsMatch = computed(
-  () => !form.password_confirmation.value || form.password.value === form.password_confirmation.value
+  () => !form.value.password_confirmation || form.value.password === form.value.password_confirmation
 )
 
 async function handleRegister() {
   error.value = ''
 
-  if (!form.terms) {
+  if (!form.value.terms) {
+    console.log('Terms not accepted', form.value.terms)
     error.value = "Tu dois accepter les conditions d'utilisation."
     return
   }
@@ -38,11 +40,14 @@ async function handleRegister() {
     axiosClient.get('/sanctum/csrf-cookie').then(() => {
       axiosClient.post('/register', form.value)
         .then((response) => {
-          console.log('Register successful:', response)
+          // console.log('Register successful:', response)
           router.push('/dashboard')
         })
-        .catch((error) => {
-          error.value = "Une erreur est survenue. Réessaie."
+        .catch((e) => {
+          // console.log('Register error: ', e.response)
+          error.value = e.response?.data?.message || "Une erreur est survenue. Réessaie."
+          errors.value = e.response?.data?.errors || {}
+          // error.value = "Une erreur est survenue. Réessaie."
         })
         .finally(() => {
           loading.value = false
@@ -53,7 +58,7 @@ async function handleRegister() {
     // stocker le token Sanctum, puis rediriger vers le paiement ou le dashboard
     // router.push('/dashboard')
   } catch (e) {
-    error.value = "Une erreur est survenue. Réessaie."
+    // error.value = "Une erreur est survenue. Réessaie."
   } finally {
     loading.value = false
   }
@@ -88,6 +93,9 @@ async function handleRegister() {
           class="w-full rounded-lg border border-ink/15 bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo/40 focus:border-indigo"
           placeholder="77 123 45 67">
       </div>
+      <p v-if="errors['phone']" class="text-sm text-danger bg-danger/5 border border-danger/20 rounded-lg px-3 py-2">
+        {{ errors['phone'][0] }}
+      </p>
 
       <div>
         <label for="email" class="block text-sm font-medium mb-1.5">Email</label>
@@ -95,6 +103,9 @@ async function handleRegister() {
           class="w-full rounded-lg border border-ink/15 bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo/40 focus:border-indigo"
           placeholder="77 123 45 67">
       </div>
+      <p v-if="errors['email']" class="text-sm text-danger bg-danger/5 border border-danger/20 rounded-lg px-3 py-2">
+        {{ errors['email'][0] }}
+      </p>
 
       <div>
         <label for="password" class="block text-sm font-medium mb-1.5">Mot de passe</label>
@@ -131,7 +142,7 @@ async function handleRegister() {
 
     <p class="text-sm text-ink/60 mt-8 text-center">
       Déjà inscrit ?
-      <RouterLink to="/connexion" class="text-indigo font-medium hover:underline">Se connecter</RouterLink>
+      <RouterLink :to="{ name: 'Login' }" class="text-indigo font-medium hover:underline">Se connecter</RouterLink>
     </p>
   </AuthLayout>
 </template>
